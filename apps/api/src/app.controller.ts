@@ -3,14 +3,20 @@ import { PrismaService } from './prisma/prisma.service';
 
 @Controller()
 export class AppController {
-  getHello(): any {
-    throw new Error('Method not implemented.');
-  }
   constructor(private readonly prisma: PrismaService) {}
+
+  @Get()
+  root() {
+    return {
+      ok: true,
+      name: 'smartflow api',
+      endpoints: ['/health', '/auth/register', '/auth/login'],
+    };
+  }
 
   @Get('health')
   async health() {
-    const result = await this.prisma.user.count();
-    return { ok: true, users: result };
+    const users = await this.prisma.user.count();
+    return { ok: true, users };
   }
 }
